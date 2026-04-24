@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "author": "OpenAI",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "id": "esp",
+      "type": "board-esp32-devkit-c-v4",
+      "top": 10,
+      "left": 10,
+      "attrs": {}
+    },
+    {
+      "id": "btnN",
+      "type": "wokwi-pushbutton",
+      "top": -85,
+      "left": -190,
+      "attrs": {
+        "color": "green",
+        "label": "N",
+        "key": "N",
+        "bounce": "0"
+      }
+    },
+    {
+      "id": "btnP",
+      "type": "wokwi-pushbutton",
+      "top": -5,
+      "left": -190,
+      "attrs": {
+        "color": "green",
+        "label": "P",
+        "key": "P",
+        "bounce": "0"
+      }
+    },
+    {
+      "id": "btnK",
+      "type": "wokwi-pushbutton",
+      "top": 75,
+      "left": -190,
+      "attrs": {
+        "color": "green",
+        "label": "K",
+        "key": "K",
+        "bounce": "0"
+      }
+    },
+    {
+      "id": "ldrPh",
+      "type": "wokwi-photoresistor-sensor",
+      "top": -110,
+      "left": 330,
+      "attrs": {
+        "lux": "100"
+      }
+    },
+    {
+      "id": "relayBomba",
+      "type": "wokwi-relay-module",
+      "top": 10,
+      "left": 360,
+      "attrs": {
+        "transistor": "pnp"
+      }
+    },
+    {
+      "id": "dhtSolo",
+      "type": "wokwi-dht22",
+      "top": 175,
+      "left": 355,
+      "attrs": {
+        "temperature": "25",
+        "humidity": "50"
+      }
+    }
+  ],
+  "connections": [
+    [ "btnN:1.l", "esp:25", "green", [] ],
+    [ "btnN:2.l", "esp:GND.1", "black", [] ],
+
+    [ "btnP:1.l", "esp:26", "green", [] ],
+    [ "btnP:2.l", "esp:GND.1", "black", [] ],
+
+    [ "btnK:1.l", "esp:27", "green", [] ],
+    [ "btnK:2.l", "esp:GND.1", "black", [] ],
+
+    [ "ldrPh:AO", "esp:34", "yellow", [] ],
+    [ "ldrPh:VCC", "esp:3V3", "red", [] ],
+    [ "ldrPh:GND", "esp:GND.1", "black", [] ],
+
+    [ "relayBomba:IN", "esp:19", "blue", [] ],
+    [ "relayBomba:VCC", "esp:3V3", "red", [] ],
+    [ "relayBomba:GND", "esp:GND.1", "black", [] ],
+
+    [ "dhtSolo:SDA", "esp:15", "orange", [] ],
+    [ "dhtSolo:VCC", "esp:3V3", "red", [] ],
+    [ "dhtSolo:GND", "esp:GND.1", "black", [] ]
+  ]
+}

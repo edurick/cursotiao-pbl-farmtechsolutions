@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560">
+  <rect width="980" height="560" fill="#f5f2e9"/>
+  <text x="40" y="48" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#223322">
+    FarmTech Solutions - Circuito da Fase 2
+  </text>
+  <text x="40" y="78" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#445544">
+    ESP32 + botoes NPK + LDR (pH) + DHT22 (umidade do solo simulada) + rele azul (bomba)
+  </text>
+
+  <rect x="120" y="140" width="230" height="280" rx="18" fill="#20242b"/>
+  <text x="170" y="175" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#f1f1f1">
+    ESP32
+  </text>
+  <text x="155" y="205" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#bfc8d6">
+    board-esp32-devkit-c-v4
+  </text>
+  <text x="142" y="250" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#8fd0ff">GPIO 25 -> N</text>
+  <text x="142" y="278" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#8fd0ff">GPIO 26 -> P</text>
+  <text x="142" y="306" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#8fd0ff">GPIO 27 -> K</text>
+  <text x="142" y="334" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#ffd26f">GPIO 34 -> LDR AO</text>
+  <text x="142" y="362" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#ffa45a">GPIO 15 -> DHT22 SDA</text>
+  <text x="142" y="390" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#8aa3ff">GPIO 19 -> RELE IN</text>
+
+  <rect x="40" y="120" width="110" height="48" rx="10" fill="#1f7a3a"/>
+  <text x="78" y="151" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#ffffff">N</text>
+  <rect x="40" y="200" width="110" height="48" rx="10" fill="#1f7a3a"/>
+  <text x="78" y="231" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#ffffff">P</text>
+  <rect x="40" y="280" width="110" height="48" rx="10" fill="#1f7a3a"/>
+  <text x="78" y="311" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#ffffff">K</text>
+  <text x="34" y="360" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#1f7a3a">
+    Botoes verdes simulam
+  </text>
+  <text x="27" y="382" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#1f7a3a">
+    Nitrogenio, Fosforo
+  </text>
+  <text x="40" y="404" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#1f7a3a">
+    e Potassio
+  </text>
+
+  <rect x="720" y="90" width="180" height="90" rx="14" fill="#f2d96b" stroke="#b08b14" stroke-width="2"/>
+  <text x="785" y="126" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4d3b00">
+    LDR
+  </text>
+  <text x="746" y="154" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#4d3b00">
+    Simula o pH do solo
+  </text>
+
+  <rect x="720" y="225" width="180" height="90" rx="14" fill="#4b70d8" stroke="#27408f" stroke-width="2"/>
+  <text x="786" y="261" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#ffffff">
+    RELE
+  </text>
+  <text x="748" y="289" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#eaf0ff">
+    Bomba d'agua simulada
+  </text>
+
+  <rect x="720" y="360" width="180" height="100" rx="14" fill="#e8f2ff" stroke="#5d7da6" stroke-width="2"/>
+  <text x="774" y="397" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#27496d">
+    DHT22
+  </text>
+  <text x="748" y="425" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#27496d">
+    Simula a umidade
+  </text>
+  <text x="747" y="446" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#27496d">
+    do solo
+  </text>
+
+  <line x1="150" y1="144" x2="120" y2="144" stroke="#1f7a3a" stroke-width="4"/>
+  <line x1="150" y1="224" x2="120" y2="224" stroke="#1f7a3a" stroke-width="4"/>
+  <line x1="150" y1="304" x2="120" y2="304" stroke="#1f7a3a" stroke-width="4"/>
+
+  <line x1="350" y1="332" x2="720" y2="135" stroke="#c49622" stroke-width="4"/>
+  <line x1="350" y1="390" x2="720" y2="410" stroke="#e07f3c" stroke-width="4"/>
+  <line x1="350" y1="360" x2="720" y2="270" stroke="#3d61c4" stroke-width="4"/>
+
+  <circle cx="350" cy="332" r="6" fill="#c49622"/>
+  <circle cx="350" cy="390" r="6" fill="#e07f3c"/>
+  <circle cx="350" cy="360" r="6" fill="#3d61c4"/>
+
+  <text x="420" y="104" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#5b683c">
+    Ajuste os botoes N/P/K e depois mova o LDR para representar a mudanca do pH.
+  </text>
+  <text x="420" y="126" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#5b683c">
+    O DHT22 decide se a irrigacao precisa ligar ou nao.
+  </text>
+
+  <text x="420" y="492" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#555555">
+    Arquivo equivalente para simulacao: fase2/esp32/diagram.json
+  </text>
+</svg>
