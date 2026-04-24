@@ -76,6 +76,9 @@
     }
   ],
   "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
     [ "btnN:1.l", "esp:25", "green", [] ],
     [ "btnN:2.l", "esp:GND.1", "black", [] ],
 
@@ -96,5 +99,10 @@
     [ "dhtSolo:SDA", "esp:15", "orange", [] ],
     [ "dhtSolo:VCC", "esp:3V3", "red", [] ],
     [ "dhtSolo:GND", "esp:GND.1", "black", [] ]
-  ]
+  ],
+  "serialMonitor": {
+    "display": "always",
+    "newline": "lf",
+    "collapse": false
+  }
 }

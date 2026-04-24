@@ -11,12 +11,18 @@ const float PH_MINIMO = 5.5f;
 const float PH_MAXIMO = 7.0f;
 const float UMIDADE_LIGAR = 55.0f;
 const float UMIDADE_DESLIGAR = 65.0f;
-const unsigned long INTERVALO_LEITURA_MS = 2000UL;
+const unsigned long INTERVALO_LEITURA_MS = 500UL;
 
 DHTesp dhtSensor;
 
 bool previsaoChuva = false;
 bool bombaLigada = false;
+bool nitrogenioOkEstado = false;
+bool fosforoOkEstado = false;
+bool potassioOkEstado = false;
+bool ultimoBotaoN = HIGH;
+bool ultimoBotaoP = HIGH;
+bool ultimoBotaoK = HIGH;
 unsigned long ultimaLeituraMs = 0;
 String bufferSerial;
 
@@ -42,8 +48,8 @@ float limitar(float valor, float minimo, float maximo) {
 }
 
 float converterLdrParaPh(int leituraLdr) {
-  float normalizado = 1.0f - (static_cast<float>(leituraLdr) / 4095.0f);
-  return limitar(14.0f * normalizado, 0.0f, 14.0f);
+  float tensao = static_cast<float>(leituraLdr) * 3.3f / 4095.0f;
+  return limitar(8.0f - tensao, 4.0f, 9.0f);
 }
 
 String statusNutriente(bool ok) {
@@ -54,9 +60,9 @@ LeituraSolo lerSensores() {
   TempAndHumidity dadosDht = dhtSensor.getTempAndHumidity();
 
   LeituraSolo leitura;
-  leitura.nitrogenioOk = digitalRead(PINO_N) == LOW;
-  leitura.fosforoOk = digitalRead(PINO_P) == LOW;
-  leitura.potassioOk = digitalRead(PINO_K) == LOW;
+  leitura.nitrogenioOk = nitrogenioOkEstado;
+  leitura.fosforoOk = fosforoOkEstado;
+  leitura.potassioOk = potassioOkEstado;
   leitura.temperatura = dadosDht.temperature;
   leitura.umidadeSolo = dadosDht.humidity;
   leitura.leituraValida = !isnan(dadosDht.temperature) && !isnan(dadosDht.humidity);
@@ -183,6 +189,34 @@ void lerSerial() {
   }
 }
 
+void atualizarNutrientesPorBotao() {
+  bool leituraN = digitalRead(PINO_N);
+  bool leituraP = digitalRead(PINO_P);
+  bool leituraK = digitalRead(PINO_K);
+
+  if (ultimoBotaoN == HIGH && leituraN == LOW) {
+    nitrogenioOkEstado = !nitrogenioOkEstado;
+    Serial.println("Nitrogenio alterado para: " + String(nitrogenioOkEstado ? "OK" : "BAIXO"));
+    ultimaLeituraMs = 0;
+  }
+
+  if (ultimoBotaoP == HIGH && leituraP == LOW) {
+    fosforoOkEstado = !fosforoOkEstado;
+    Serial.println("Fosforo alterado para: " + String(fosforoOkEstado ? "OK" : "BAIXO"));
+    ultimaLeituraMs = 0;
+  }
+
+  if (ultimoBotaoK == HIGH && leituraK == LOW) {
+    potassioOkEstado = !potassioOkEstado;
+    Serial.println("Potassio alterado para: " + String(potassioOkEstado ? "OK" : "BAIXO"));
+    ultimaLeituraMs = 0;
+  }
+
+  ultimoBotaoN = leituraN;
+  ultimoBotaoP = leituraP;
+  ultimoBotaoK = leituraK;
+}
+
 void setup() {
   Serial.begin(115200);
   analogReadResolution(12);
@@ -196,12 +230,14 @@ void setup() {
   aplicarEstadoBomba(false);
 
   Serial.println("Sistema de irrigacao inteligente iniciado.");
-  Serial.println("Ajuste N, P, K, LDR (pH) e umidade do DHT22.");
+  Serial.println("Clique em N, P e K para alternar o estado dos nutrientes.");
+  Serial.println("Ajuste o LDR para pH entre 5.5 e 7.0 e o DHT22 para umidade abaixo de 55%.");
   Serial.println("Para previsao de chuva, envie CHUVA=1 ou CHUVA=0 no Serial Monitor.");
 }
 
 void loop() {
   lerSerial();
+  atualizarNutrientesPorBotao();
 
   unsigned long agora = millis();
   if (agora - ultimaLeituraMs < INTERVALO_LEITURA_MS) {

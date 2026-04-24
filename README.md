@@ -13,6 +13,10 @@ Este repositorio mantem os arquivos da Fase 1 na raiz e adiciona uma entrega com
 - `fase2/r/cenarios_irrigacao.csv`: base exemplo para o script em R
 - `fase2/docs/circuito-fase2.svg`: imagem documentando o circuito usado na Fase 2
 
+## Video de demonstracao
+
+- Demonstracao do sistema: https://youtu.be/E9An0S39GFg
+
 ## Cultura escolhida
 
 Foi adotado o **milho**, porque:
@@ -55,8 +59,8 @@ Tabela de ligacoes:
 
 Os tres botoes verdes simulam os nutrientes:
 
-- botao pressionado = nutriente em nivel adequado;
-- botao solto = nutriente insuficiente.
+- cada clique no botao alterna entre `OK` e `BAIXO`;
+- isso facilita a demonstracao no Wokwi, pois o estado do nutriente fica salvo sem precisar segurar tres botoes ao mesmo tempo.
 
 O LDR simula o pH:
 
@@ -89,7 +93,7 @@ Essa escolha foi feita para usar todos os sensores pedidos na decisao e evitar i
 
 Durante a simulacao:
 
-- use as teclas `N`, `P` e `K` para acionar os tres botoes verdes;
+- clique nos botoes `N`, `P` e `K` para alternar o estado dos tres nutrientes;
 - clique no DHT22 e altere a umidade para simular solo mais seco ou mais umido;
 - ajuste o LDR manualmente para simular a mudanca de pH;
 - acompanhe a decisao no Serial Monitor.
