@@ -1,12 +1,16 @@
 # Lista principal de registros
 # Cada registro: [cultura, forma, area, produto, dose, num_ruas, total_insumo]
+from pathlib import Path
+
 registros = []
 
-# Culturas disponíveis
+# Culturas disponiveis
 CULTURAS = ["Soja", "Milho"]
 
-# Formas geométricas
-FORMAS = {"Soja": "Retângulo", "Milho": "Círculo"}
+# Formas geometricas
+FORMAS = {"Soja": "Retangulo", "Milho": "Circulo"}
+
+CSV_PATH = Path(__file__).resolve().parent.parent / "dados" / "dados_export.csv"
 
 
 def adicionar_registro(registro):
@@ -21,7 +25,7 @@ def listar_registros():
         return
 
     print("\n" + "=" * 80)
-    print(f"{'Índice':<8}{'Cultura':<12}{'Forma':<12}{'Área (m²)':<12}{'Produto':<15}{'Dose':<10}{'Ruas':<8}{'Total (L)':<10}")
+    print(f"{'Indice':<8}{'Cultura':<12}{'Forma':<12}{'Area (m²)':<12}{'Produto':<15}{'Dose':<10}{'Ruas':<8}{'Total (L)':<10}")
     print("=" * 80)
 
     for i, reg in enumerate(registros):
@@ -30,7 +34,7 @@ def listar_registros():
 
 
 def atualizar_registro(index, novo_dados):
-    """Modifica um registro em uma posição específica"""
+    """Modifica um registro em uma posicao especifica"""
     if 0 <= index < len(registros):
         registros[index] = novo_dados
         return True
@@ -46,10 +50,12 @@ def deletar_registro(index):
 
 
 def exportar_para_csv():
-    """Exporta registros para formato CSV compatível com R"""
+    """Exporta registros para formato CSV compativel com R"""
     import csv
 
-    with open("dados_export.csv", "w", newline="") as arquivo:
+    CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    with CSV_PATH.open("w", newline="", encoding="utf-8") as arquivo:
         writer = csv.writer(arquivo)
         writer.writerow(["cultura", "forma", "area", "produto", "dose", "num_ruas", "total_insumo"])
         for reg in registros:

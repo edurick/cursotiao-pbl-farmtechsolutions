@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from calculos import (
     calcular_area_retangulo,
     calcular_area_circulo,
@@ -10,8 +12,11 @@ from dados import (
     deletar_registro,
     exportar_para_csv,
     CULTURAS,
-    FORMAS
+    FORMAS,
+    CSV_PATH,
 )
+
+R_SCRIPT_PATH = Path(__file__).resolve().parent.parent / "r" / "estatisticas.R"
 
 
 def entrada_dados():
@@ -19,7 +24,7 @@ def entrada_dados():
     print("\n--- Entrada de Dados ---")
 
     # Selecionar cultura
-    print("\nCulturas disponíveis:")
+    print("\nCulturas disponiveis:")
     for i, cultura in enumerate(CULTURAS, 1):
         print(f"{i}. {cultura}")
 
@@ -29,10 +34,10 @@ def entrada_dados():
             cultura = CULTURAS[int(opcao_cultura) - 1]
             forma = FORMAS[cultura]
             break
-        print("Opção inválida. Tente novamente.")
+        print("Opcao invalida. Tente novamente.")
 
-    # Solicitar medidas e calcular área
-    print(f"\nForma geométrica: {forma}")
+    # Solicitar medidas e calcular area
+    print(f"\nForma geometrica: {forma}")
     area = 0
 
     if cultura == "Soja":
@@ -42,11 +47,11 @@ def entrada_dados():
                 comprimento = float(input("Digite o comprimento (m): "))
                 if largura > 0 and comprimento > 0:
                     area = calcular_area_retangulo(largura, comprimento)
-                    print(f"Área calculada: {area:.2f} m²")
+                    print(f"Area calculada: {area:.2f} m²")
                     break
                 print("Valores devem ser positivos.")
             except ValueError:
-                print("Entrada inválida. Digite números válidos.")
+                print("Entrada invalida. Digite numeros validos.")
 
     elif cultura == "Milho":
         while True:
@@ -54,11 +59,11 @@ def entrada_dados():
                 raio = float(input("Digite o raio (m): "))
                 if raio > 0:
                     area = calcular_area_circulo(raio)
-                    print(f"Área calculada: {area:.2f} m²")
+                    print(f"Area calculada: {area:.2f} m²")
                     break
                 print("O raio deve ser positivo.")
             except ValueError:
-                print("Entrada inválida. Digite um número válido.")
+                print("Entrada invalida. Digite um numero valido.")
 
     # Dados do insumo
     print("\n--- Dados do Insumo ---")
@@ -69,26 +74,26 @@ def entrada_dados():
             dose = float(input("Dose por m² (litros): "))
             if dose >= 0:
                 break
-            print("A dose não pode ser negativa.")
+            print("A dose nao pode ser negativa.")
         except ValueError:
-            print("Entrada inválida.")
+            print("Entrada invalida.")
 
     while True:
         try:
-            num_ruas = int(input("Número de ruas: "))
+            num_ruas = int(input("Numero de ruas: "))
             if num_ruas > 0:
                 break
-            print("O número de ruas deve ser positivo.")
+            print("O numero de ruas deve ser positivo.")
         except ValueError:
-            print("Entrada inválida. Digite um número inteiro.")
+            print("Entrada invalida. Digite um numero inteiro.")
 
     # Calcular total de insumo
     resultado_insumos = calcular_insumos(area, dose, num_ruas)
     total_insumo = resultado_insumos["total"]
 
-    print(f"\nTotal de insumo necessário: {total_insumo:.2f} {resultado_insumos['unidade']}")
+    print(f"\nTotal de insumo necessario: {total_insumo:.2f} {resultado_insumos['unidade']}")
 
-    # Criar registro e adicionar à lista
+    # Criar registro e adicionar a lista
     registro = [cultura, forma, area, produto, dose, num_ruas, total_insumo]
     adicionar_registro(registro)
     print("\n✓ Registro adicionado com sucesso!")
@@ -96,13 +101,13 @@ def entrada_dados():
 
 def saida_dados():
     """Exibe todos os registros cadastrados"""
-    print("\n--- Saída de Dados ---")
+    print("\n--- Saida de Dados ---")
     listar_registros()
 
 
 def atualizar_dados():
     """Atualiza um registro existente"""
-    print("\n--- Atualização de Dados ---")
+    print("\n--- Atualizacao de Dados ---")
     listar_registros()
 
     if not len(registros_list := __import__("dados", fromlist=["registros"]).registros):
@@ -110,19 +115,19 @@ def atualizar_dados():
 
     while True:
         try:
-            index = int(input("\nDigite o índice do registro a atualizar: "))
+            index = int(input("\nDigite o indice do registro a atualizar: "))
             if 0 <= index < len(registros_list):
                 break
-            print(f"Índice deve estar entre 0 e {len(registros_list) - 1}.")
+            print(f"Indice deve estar entre 0 e {len(registros_list) - 1}.")
         except ValueError:
-            print("Entrada inválida.")
+            print("Entrada invalida.")
 
     # Exibir registro atual
     reg_atual = registros_list[index]
     print(f"\nRegistro atual: {reg_atual}")
 
     # Selecionar nova cultura
-    print("\nCulturas disponíveis:")
+    print("\nCulturas disponiveis:")
     for i, cultura in enumerate(CULTURAS, 1):
         print(f"{i}. {cultura}")
 
@@ -132,9 +137,9 @@ def atualizar_dados():
             cultura = CULTURAS[int(opcao_cultura) - 1]
             forma = FORMAS[cultura]
             break
-        print("Opção inválida.")
+        print("Opcao invalida.")
 
-    # Recalcular área
+    # Recalcular area
     area = 0
     if cultura == "Soja":
         while True:
@@ -146,7 +151,7 @@ def atualizar_dados():
                     break
                 print("Valores devem ser positivos.")
             except ValueError:
-                print("Entrada inválida.")
+                print("Entrada invalida.")
     else:
         while True:
             try:
@@ -156,7 +161,7 @@ def atualizar_dados():
                     break
                 print("O raio deve ser positivo.")
             except ValueError:
-                print("Entrada inválida.")
+                print("Entrada invalida.")
 
     # Novos dados do insumo
     produto = input("Novo nome do produto: ")
@@ -166,18 +171,18 @@ def atualizar_dados():
             dose = float(input("Nova dose por m² (litros): "))
             if dose >= 0:
                 break
-            print("A dose não pode ser negativa.")
+            print("A dose nao pode ser negativa.")
         except ValueError:
-            print("Entrada inválida.")
+            print("Entrada invalida.")
 
     while True:
         try:
-            num_ruas = int(input("Novo número de ruas: "))
+            num_ruas = int(input("Novo numero de ruas: "))
             if num_ruas > 0:
                 break
-            print("O número de ruas deve ser positivo.")
+            print("O numero de ruas deve ser positivo.")
         except ValueError:
-            print("Entrada inválida.")
+            print("Entrada invalida.")
 
     total_insumo = calcular_insumos(area, dose, num_ruas)["total"]
     novo_registro = [cultura, forma, area, produto, dose, num_ruas, total_insumo]
@@ -190,7 +195,7 @@ def atualizar_dados():
 
 def deletar_dados():
     """Remove um registro da lista"""
-    print("\n--- Deleção de Dados ---")
+    print("\n--- Delecao de Dados ---")
     listar_registros()
 
     import dados
@@ -199,12 +204,12 @@ def deletar_dados():
 
     while True:
         try:
-            index = int(input("\nDigite o índice do registro a deletar: "))
+            index = int(input("\nDigite o indice do registro a deletar: "))
             if 0 <= index < len(dados.registros):
                 break
-            print(f"Índice deve estar entre 0 e {len(dados.registros) - 1}.")
+            print(f"Indice deve estar entre 0 e {len(dados.registros) - 1}.")
         except ValueError:
-            print("Entrada inválida.")
+            print("Entrada invalida.")
 
     if deletar_registro(index):
         print("\n✓ Registro deletado com sucesso!")
@@ -213,35 +218,35 @@ def deletar_dados():
 
 
 def exportar_para_r():
-    """Exporta dados para CSV compatível com R"""
+    """Exporta dados para CSV compativel com R"""
     print("\n--- Exportar para R ---")
     import dados
 
     if not dados.registros:
-        print("Não há registros para exportar.")
+        print("Nao ha registros para exportar.")
         return
 
     qtd = exportar_para_csv()
-    print(f"\n✓ {qtd} registro(s) exportado(s) para 'dados_export.csv'")
-    print("Execute 'Rscript estatisticas.R' para analisar os dados.")
+    print(f"\n✓ {qtd} registro(s) exportado(s) para '{CSV_PATH}'")
+    print(f"Execute 'Rscript {R_SCRIPT_PATH}' para analisar os dados.")
 
 
 def main():
-    """Menu principal da aplicação"""
+    """Menu principal da aplicacao"""
     while True:
         print("\n" + "=" * 40)
         print("    FarmTech Solutions")
-        print("    Sistema de Gestão Agrícola")
+        print("    Sistema de Gestao Agricola")
         print("=" * 40)
         print("1. Entrada de dados")
-        print("2. Saída de dados")
-        print("3. Atualização")
-        print("4. Deleção")
+        print("2. Saida de dados")
+        print("3. Atualizacao")
+        print("4. Delecao")
         print("5. Exportar para R")
         print("0. Sair")
         print("=" * 40)
 
-        opcao = input("Escolha uma opção: ")
+        opcao = input("Escolha uma opcao: ")
 
         if opcao == "1":
             entrada_dados()
@@ -257,7 +262,7 @@ def main():
             print("\nObrigado por usar FarmTech Solutions!")
             break
         else:
-            print("\n✗ Opção inválida. Tente novamente.")
+            print("\n✗ Opcao invalida. Tente novamente.")
 
 
 if __name__ == "__main__":
