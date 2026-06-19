@@ -128,7 +128,7 @@ def treinar_para_alvo(df: pd.DataFrame, alvo: str) -> dict:
     )
 
     candidatos = {
-        "Regressao Linear": LinearRegression(),
+        "Regressão Linear": LinearRegression(),
         "Random Forest": RandomForestRegressor(
             n_estimators=200, random_state=SEMENTE, n_jobs=-1
         ),

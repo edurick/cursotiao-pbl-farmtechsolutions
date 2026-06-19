@@ -11,17 +11,17 @@
   "rendimento_estimado": {
     "melhor_modelo": "Random Forest",
     "metricas_por_modelo": {
-      "Regressao Linear": {
-        "MAE": 6.231,
-        "MSE": 62.59,
-        "RMSE": 7.911,
-        "R2": 0.685
-      },
       "Random Forest": {
         "MAE": 5.616,
         "MSE": 52.964,
         "RMSE": 7.278,
         "R2": 0.7334
+      },
+      "Regressão Linear": {
+        "MAE": 6.231,
+        "MSE": 62.59,
+        "RMSE": 7.911,
+        "R2": 0.685
       }
     },
     "metricas_melhor": {
@@ -34,17 +34,17 @@
   "volume_irrigacao": {
     "melhor_modelo": "Random Forest",
     "metricas_por_modelo": {
-      "Regressao Linear": {
-        "MAE": 122.667,
-        "MSE": 25630.094,
-        "RMSE": 160.094,
-        "R2": 0.8318
-      },
       "Random Forest": {
         "MAE": 21.894,
         "MSE": 775.789,
         "RMSE": 27.853,
         "R2": 0.9949
+      },
+      "Regressão Linear": {
+        "MAE": 122.667,
+        "MSE": 25630.094,
+        "RMSE": 160.094,
+        "R2": 0.8318
       }
     },
     "metricas_melhor": {

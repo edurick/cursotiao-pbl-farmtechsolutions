@@ -25,18 +25,18 @@ def recomendar_irrigacao(umidade: float, chuva_prevista: int,
     """Decide se deve irrigar e quanto, combinando regra + previsao do modelo."""
     if chuva_prevista == 1:
         return {
-            "acao": "NAO irrigar",
-            "detalhe": "Ha previsao de chuva. A irrigacao automatica fica suspensa "
-                       "para economizar agua e evitar encharcamento.",
+            "acao": "NÃO irrigar",
+            "detalhe": "Há previsão de chuva. A irrigação automática fica suspensa "
+                       "para economizar água e evitar encharcamento.",
             "volume_litros": 0.0,
             "nivel": "ok",
         }
 
     if umidade >= UMIDADE_ALVO:
         return {
-            "acao": "NAO irrigar",
-            "detalhe": f"A umidade do solo ({umidade:.0f}%) ja esta no alvo "
-                       f"(>= {UMIDADE_ALVO:.0f}%). Nao e necessario irrigar agora.",
+            "acao": "NÃO irrigar",
+            "detalhe": f"A umidade do solo ({umidade:.0f}%) já está no alvo "
+                       f"(>= {UMIDADE_ALVO:.0f}%). Não é necessário irrigar agora.",
             "volume_litros": 0.0,
             "nivel": "ok",
         }
@@ -52,8 +52,8 @@ def recomendar_irrigacao(umidade: float, chuva_prevista: int,
 
     return {
         "acao": "Monitorar",
-        "detalhe": f"Umidade intermediaria ({umidade:.0f}%). Acompanhar; "
-                   f"irrigacao sugerida de ~{volume_previsto:.0f} litros se continuar caindo.",
+        "detalhe": f"Umidade intermediária ({umidade:.0f}%). Acompanhar; "
+                   f"irrigação sugerida de ~{volume_previsto:.0f} litros se continuar caindo.",
         "volume_litros": round(volume_previsto, 0),
         "nivel": "atencao",
     }
@@ -64,20 +64,20 @@ def recomendar_ph(ph: float) -> dict:
     if ph < PH_MINIMO:
         return {
             "acao": "Corrigir pH (calagem)",
-            "detalhe": f"pH {ph:.1f} esta acido demais para o milho. Aplicar calcario "
-                       f"para elevar o pH em direcao a faixa ideal ({PH_MINIMO}-{PH_MAXIMO}).",
+            "detalhe": f"pH {ph:.1f} está ácido demais para o milho. Aplicar calcário "
+                       f"para elevar o pH em direção à faixa ideal ({PH_MINIMO}-{PH_MAXIMO}).",
             "nivel": "alerta",
         }
     if ph > PH_MAXIMO:
         return {
             "acao": "Corrigir pH",
-            "detalhe": f"pH {ph:.1f} esta alcalino demais. Considerar enxofre ou materia "
-                       f"organica para baixar o pH ate a faixa ideal ({PH_MINIMO}-{PH_MAXIMO}).",
+            "detalhe": f"pH {ph:.1f} está alcalino demais. Considerar enxofre ou matéria "
+                       f"orgânica para baixar o pH até a faixa ideal ({PH_MINIMO}-{PH_MAXIMO}).",
             "nivel": "alerta",
         }
     return {
         "acao": "pH adequado",
-        "detalhe": f"pH {ph:.1f} esta dentro da faixa ideal do milho ({PH_MINIMO}-{PH_MAXIMO}).",
+        "detalhe": f"pH {ph:.1f} está dentro da faixa ideal do milho ({PH_MINIMO}-{PH_MAXIMO}).",
         "nivel": "ok",
     }
 
@@ -86,23 +86,23 @@ def recomendar_fertilizacao(n: int, p: int, k: int) -> dict:
     """Sugere fertilizacao com base nos nutrientes que estiverem baixos."""
     faltando = []
     if n == 0:
-        faltando.append("Nitrogenio (N)")
+        faltando.append("Nitrogênio (N)")
     if p == 0:
-        faltando.append("Fosforo (P)")
+        faltando.append("Fósforo (P)")
     if k == 0:
-        faltando.append("Potassio (K)")
+        faltando.append("Potássio (K)")
 
     if not faltando:
         return {
             "acao": "Nutrientes OK",
-            "detalhe": "N, P e K estao adequados. Nenhuma adubacao corretiva necessaria agora.",
+            "detalhe": "N, P e K estão adequados. Nenhuma adubação corretiva necessária agora.",
             "nivel": "ok",
         }
 
     return {
         "acao": "Aplicar fertilizante",
         "detalhe": "Nutriente(s) abaixo do ideal: " + ", ".join(faltando) +
-                   ". Recomenda-se adubacao corretiva para nao limitar o rendimento.",
+                   ". Recomenda-se adubação corretiva para não limitar o rendimento.",
         "nivel": "alerta",
     }
 

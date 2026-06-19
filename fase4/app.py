@@ -32,7 +32,7 @@ from recomendacoes import gerar_recomendacoes  # noqa: E402
 # Configuracao da pagina
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="FarmTech Solutions | Assistente Agricola",
+    page_title="FarmTech Solutions | Assistente Agrícola",
     page_icon="🌽",
     layout="wide",
 )
@@ -62,9 +62,10 @@ st.markdown(
         padding: 14px 16px; border-radius: 10px; margin-bottom: 10px;
         border-left: 6px solid {VERDE};
     }}
-    .rec-ok     {{ background: #e8f5e9; border-left-color: #2e7d32; }}
-    .rec-atencao{{ background: #fff8e1; border-left-color: #f9a825; }}
-    .rec-alerta {{ background: #ffebee; border-left-color: #c62828; }}
+    .rec-ok      {{ background: #e8f5e9; border-left-color: #2e7d32; color: #1b5e20; }}
+    .rec-atencao {{ background: #fff8e1; border-left-color: #f9a825; color: #8a5a00; }}
+    .rec-alerta  {{ background: #ffebee; border-left-color: #c62828; color: #8e0000; }}
+    .rec-ok b, .rec-atencao b, .rec-alerta b {{ color: inherit; }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -99,7 +100,7 @@ faltando = [
 ]
 if faltando:
     st.error(
-        "Arquivos necessarios nao encontrados. Rode antes, no terminal:\n\n"
+        "Arquivos necessários não encontrados. Rode antes, no terminal:\n\n"
         "python src/gerar_dados.py\n"
         "python src/treinar_modelo.py"
     )
@@ -114,33 +115,33 @@ modelo_rend, modelo_vol, metricas = carregar_modelos()
 st.markdown(
     """
     <div class="bloco-titulo">
-        <h1>🌽 FarmTech Solutions — Assistente Agricola Inteligente</h1>
-        <p>Previsao de rendimento e irrigacao do milho com Machine Learning</p>
+        <h1>🌽 FarmTech Solutions — Assistente Agrícola Inteligente</h1>
+        <p>Previsão de rendimento e irrigação do milho com Machine Learning</p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
 aba_visao, aba_corr, aba_prev, aba_tend = st.tabs(
-    ["📊 Visao Geral", "🔗 Correlacoes", "🔮 Previsao Interativa", "📈 Tendencias"]
+    ["📊 Visão Geral", "🔗 Correlações", "🔮 Previsão Interativa", "📈 Tendências"]
 )
 
 # ===========================================================================
 # ABA 1 - VISAO GERAL (metricas dos modelos)
 # ===========================================================================
 with aba_visao:
-    st.subheader("Desempenho dos modelos de regressao")
+    st.subheader("Desempenho dos modelos de regressão")
     st.caption(
-        "Metricas calculadas no conjunto de teste (20% dos dados nunca vistos "
-        "pelo modelo durante o treino). R2 mais perto de 1 e melhor; "
-        "MAE e RMSE mais baixos sao melhores."
+        "Métricas calculadas no conjunto de teste (20% dos dados nunca vistos "
+        "pelo modelo durante o treino). R² mais perto de 1 é melhor; "
+        "MAE e RMSE mais baixos são melhores."
     )
 
     col1, col2 = st.columns(2)
 
     for coluna, alvo, titulo, unidade in [
         (col1, "rendimento_estimado", "Rendimento do milho", "sacas/ha"),
-        (col2, "volume_irrigacao", "Volume de irrigacao", "litros"),
+        (col2, "volume_irrigacao", "Volume de irrigação", "litros"),
     ]:
         with coluna:
             info = metricas[alvo]
@@ -160,19 +161,19 @@ with aba_visao:
             st.dataframe(comp, use_container_width=True)
 
     st.info(
-        "Interpretacao: o **Random Forest** captura relacoes nao lineares "
-        "(ex.: o efeito do deficit de umidade no volume de irrigacao), por isso "
-        "supera a Regressao Linear, especialmente na previsao de irrigacao."
+        "Interpretação: o **Random Forest** captura relações não lineares "
+        "(ex.: o efeito do déficit de umidade no volume de irrigação), por isso "
+        "supera a Regressão Linear, especialmente na previsão de irrigação."
     )
 
 # ===========================================================================
 # ABA 2 - CORRELACOES
 # ===========================================================================
 with aba_corr:
-    st.subheader("Correlacao entre as variaveis agricolas")
+    st.subheader("Correlação entre as variáveis agrícolas")
     st.caption(
-        "Valores proximos de +1 (verde) indicam que as variaveis crescem juntas; "
-        "proximos de -1 (vermelho) indicam relacao inversa; perto de 0, sem relacao."
+        "Valores próximos de +1 (verde) indicam que as variáveis crescem juntas; "
+        "próximos de -1 (vermelho) indicam relação inversa; perto de 0, sem relação."
     )
 
     corr = df.corr(numeric_only=True)
@@ -183,7 +184,7 @@ with aba_corr:
     fig_corr.update_layout(height=550, margin=dict(l=10, r=10, t=30, b=10))
     st.plotly_chart(fig_corr, use_container_width=True)
 
-    st.markdown("**Relacao entre duas variaveis (escolha os eixos):**")
+    st.markdown("**Relação entre duas variáveis (escolha os eixos):**")
     c1, c2, c3 = st.columns(3)
     eixo_x = c1.selectbox("Eixo X", df.columns, index=0)
     eixo_y = c2.selectbox("Eixo Y", df.columns, index=list(df.columns).index("rendimento_estimado"))
@@ -201,8 +202,8 @@ with aba_corr:
 # ABA 3 - PREVISAO INTERATIVA
 # ===========================================================================
 with aba_prev:
-    st.subheader("Simule um cenario e receba a recomendacao")
-    st.caption("Ajuste os sensores no painel da esquerda. As previsoes atualizam na hora.")
+    st.subheader("Simule um cenário e receba a recomendação")
+    st.caption("Ajuste os sensores no painel da esquerda. As previsões atualizam na hora.")
 
     entrada, saida = st.columns([1, 1.4])
 
@@ -216,7 +217,7 @@ with aba_prev:
         n = 1 if col_n.checkbox("N ok", value=True) else 0
         p = 1 if col_p.checkbox("P ok", value=True) else 0
         k = 1 if col_k.checkbox("K ok", value=True) else 0
-        chuva = 1 if st.checkbox("Previsao de chuva", value=False) else 0
+        chuva = 1 if st.checkbox("Previsão de chuva", value=False) else 0
 
     # Monta a entrada para os modelos (mesma ordem das FEATURES)
     X_novo = pd.DataFrame([{
@@ -232,12 +233,12 @@ with aba_prev:
     )
 
     with saida:
-        st.markdown("##### Previsoes do modelo")
+        st.markdown("##### Previsões do modelo")
         mp1, mp2 = st.columns(2)
         mp1.metric("Rendimento previsto", f"{rec['rendimento_previsto']:.0f} sacas/ha")
-        mp2.metric("Irrigacao sugerida", f"{rec['volume_previsto']:.0f} L")
+        mp2.metric("Irrigação sugerida", f"{rec['volume_previsto']:.0f} L")
 
-        st.markdown("##### Recomendacoes de manejo")
+        st.markdown("##### Recomendações de manejo")
         for item in [rec["irrigacao"], rec["ph"], rec["fertilizacao"]]:
             classe = {"ok": "rec-ok", "atencao": "rec-atencao", "alerta": "rec-alerta"}[item["nivel"]]
             st.markdown(
@@ -249,8 +250,8 @@ with aba_prev:
 # ABA 4 - TENDENCIAS
 # ===========================================================================
 with aba_tend:
-    st.subheader("Tendencias de produtividade e irrigacao")
-    st.caption("Como o rendimento e a irrigacao variam conforme as condicoes do solo.")
+    st.subheader("Tendências de produtividade e irrigação")
+    st.caption("Como o rendimento e a irrigação variam conforme as condições do solo.")
 
     col_a, col_b = st.columns(2)
 
@@ -260,7 +261,7 @@ with aba_tend:
     rend_ph = df_ph.groupby("faixa_ph", observed=True)["rendimento_estimado"].mean().reset_index()
     rend_ph["faixa_ph"] = rend_ph["faixa_ph"].astype(str)
     fig_ph = px.bar(rend_ph, x="faixa_ph", y="rendimento_estimado",
-                    color_discrete_sequence=[VERDE], title="Rendimento medio por faixa de pH")
+                    color_discrete_sequence=[VERDE], title="Rendimento médio por faixa de pH")
     fig_ph.update_layout(height=400, xaxis_title="Faixa de pH", yaxis_title="Rendimento (sacas/ha)")
     col_a.plotly_chart(fig_ph, use_container_width=True)
 
@@ -268,9 +269,9 @@ with aba_tend:
     fig_vol = px.scatter(df, x="umidade_solo", y="volume_irrigacao",
                          color="chuva_prevista", opacity=0.6,
                          color_continuous_scale=["#2e7d32", "#1565c0"],
-                         title="Irrigacao necessaria vs umidade do solo")
+                         title="Irrigação necessária vs umidade do solo")
     fig_vol.update_layout(height=400, xaxis_title="Umidade do solo (%)",
-                          yaxis_title="Volume de irrigacao (L)")
+                          yaxis_title="Volume de irrigação (L)")
     col_b.plotly_chart(fig_vol, use_container_width=True)
 
     # Rendimento medio conforme presenca de nutrientes
@@ -278,10 +279,10 @@ with aba_tend:
     rend_npk = df.groupby("nutrientes_ok")["rendimento_estimado"].mean().reset_index()
     fig_npk = px.line(rend_npk, x="nutrientes_ok", y="rendimento_estimado", markers=True,
                       color_discrete_sequence=[DOURADO],
-                      title="Rendimento medio conforme nutrientes presentes (0 a 3)")
+                      title="Rendimento médio conforme nutrientes presentes (0 a 3)")
     fig_npk.update_layout(height=380, xaxis_title="Quantidade de nutrientes OK (N+P+K)",
                           yaxis_title="Rendimento (sacas/ha)")
     st.plotly_chart(fig_npk, use_container_width=True)
 
 st.markdown("---")
-st.caption("FarmTech Solutions · Fase 4 · Machine Learning aplicado ao agronegocio")
+st.caption("FarmTech Solutions · Fase 4 · Machine Learning aplicado ao agronegócio")
